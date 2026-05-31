@@ -1,0 +1,9 @@
+customtkinter>=5.2.2
+markdown-it-py>=3.0.0
+mdit-py-plugins>=0.4.0
+latex2mathml>=3.81.0
+pygments>=2.17.0
+keyboard>=0.13.5
+pywin32>=306
+pyperclip>=1.11.0
+psutil>=5.9.0
