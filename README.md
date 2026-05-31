@@ -17,6 +17,9 @@
 - 🎨 **现代配置 UI**：基于 `customtkinter` 设计的暗色透明交互控制台，支持断电记忆存储。
 
 ---
+## 演示界面
+<img width="1444" height="1005" alt="image" src="https://github.com/user-attachments/assets/aaf3ead2-2501-4a47-bcad-0490367960a7" />
+<img width="1957" height="1490" alt="image" src="https://github.com/user-attachments/assets/ef21ce12-e6db-4237-9407-ee884b93564f" />
 
 ## 环境要求
 
