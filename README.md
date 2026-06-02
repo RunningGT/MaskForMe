@@ -1,80 +1,85 @@
 # MarkForMe 🚀
 
-**MarkForMe** 是一款专为Microsoft OneNote设计的后台无缝 Markdown 渲染器。 
-它通过监听全局系统键盘事件与接管剪贴板，实现在 OneNote 这种不支持原生 Markdown 的富文本编辑器中，敲击回车瞬间将纯文本原地转换为美观的排版格式。
+**MarkForMe** is a background, seamless Markdown renderer designed specifically for Microsoft OneNote.
 
----
+By listening to global system keyboard events and taking over the clipboard, it enables instant, in-place conversion of plain text into beautifully formatted rich text in OneNote—an editor that lacks native Markdown support.
 
-## ✨ 核心特性
+## ✨ Key Features
 
-- ⚡️ **无缝拦截与渲染**：在 OneNote 中输入文本或选中代码后，按下 `Enter` 或 `Ctrl+Enter`，即可瞬间原地替换为富文本。
-- 📐 **原生数学公式支持**：支持内联 `$E=mc^2$` 与块级 `$$...$$` 公式，利用 `latex2mathml` 转换为 OneNote 原生可识别的 MathML。
-- 💻 **IDE 级的长代码块高亮**：由 `Pygments` 强力驱动大段代码块 (`` ` ``包裹)，内置 3 种极客配色 (`PyCharm 深色 (Dark+)`、`极客暗黑 (Monokai)`、`经典浅色 (VS Light)`)，并利用 `<table>` 级注入完美解决 OneNote 吞背景色的痛点。
-- 🔧 **三种高度自由的交互模式**：
-    1. **追加渲染**：读取剪贴板，在当前光标下一行写入渲染结果。
-    2. **局部覆盖**：读取剪贴板，直接覆盖当前被鼠标选中的原生文本。
-    3. **全自动替换**：自动模拟 `Ctrl+C` 提取鼠标选中区域，后台渲染后自动覆盖，无需提前复制！
-- 🎨 **现代配置 UI**：基于 `customtkinter` 设计的暗色透明交互控制台，支持断电记忆存储。
+- ⚡️ **Seamless Interception & Rendering**: Input your text or select your code in OneNote, press `Enter` or `Ctrl+Enter`, and it will instantly be replaced in-place with rendered rich text.
+- 📐 **Native Math Formula Support**: Supports inline `$E=mc^2$` and block `$$...$$` formulas, leveraging `latex2mathml` to convert them into native MathML recognizable by OneNote.
+- 💻 **IDE-Grade Code Block Highlighting**: Powered by `Pygments` to render code blocks (wrapped in triple backticks), offering 3 built-in themes (`PyCharm Dark (Dark+)`, `Monokai`, and `Classic Light (VS Light)`). It injects formatting at the `<table>` level to perfectly solve OneNote's annoying issue of stripping background colors.
+- 🔧 **Three Highly Flexible Interaction Modes**:
+  1. **Append Render**: Reads the clipboard and writes the rendered output directly on the line below the current cursor.
+  2. **Partial Overwrite**: Reads the clipboard and directly overwrites the currently selected plain text.
+  3. **Fully Automatic Replacement**: Automatically simulates `Ctrl+C` to copy the selected area, renders it in the background, and overwrites it automatically—no manual copy-pasting required!
+- 🎨 **Modern Config UI**: A beautiful dark, semi-transparent control panel designed with `customtkinter`, with support for persistent setting state storage.
 
----
-## 演示界面
+## Demo Interface
+
+> 🔔 **Note on Language** > The software's main user interface is in **Chinese**. If you wish to change the display language, please manually modify the language configurations or strings directly in the source code.
+
 <img width="1444" height="1005" alt="image" src="https://github.com/user-attachments/assets/aaf3ead2-2501-4a47-bcad-0490367960a7" />
 <img width="1957" height="1490" alt="image" src="https://github.com/user-attachments/assets/ef21ce12-e6db-4237-9407-ee884b93564f" />
 
-## 环境要求
+## System Requirements
 
-- **操作系统**：Windows 10 / Windows 11 (依赖 `pywin32` 操作 Windows 系统剪贴板格式)
-- **Python 版本**：Python 3.10+
+- **Operating System**: Windows 10 / Windows 11 (Relies on `pywin32` to manipulate the native Windows HTML clipboard format)
+- **Python Version**: Python 3.10+
 
-### 运行依赖
-你可以通过项目根目录的 `requirements.txt` 快速安装所有依赖：
-```bash
+### Dependencies
+
+You can quickly install all dependencies via `requirements.txt` in the root directory:
+
+```
 pip install -r requirements.txt
 ```
 
-*(主要包含：`customtkinter`、`markdown-it-py`、`mdit-py-plugins`、`latex2mathml`、`pygments`、`keyboard`、`pywin32`、`pyperclip`、`psutil`)*
+*(Main dependencies include: customtkinter, markdown-it-py, mdit-py-plugins, latex2mathml, pygments, keyboard, pywin32, pyperclip, psutil)*
 
----
+## Instructions for Use
 
-## 使用说明
+### 1. Running from Source Code
 
-### 1. 源码运行
-在终端中激活你的 Python 环境，并在项目根目录下执行：
-```bash
+Activate your Python environment in your terminal, and run the following command in the project root:
+
+```
 python main.py
 ```
-此时会弹出一个控制面板。确认“后台运行监听”处于开启状态。随后在 OneNote 中直接选中想要渲染的纯文本，按下回车即可生效！
 
-### 2. 打包为独立的 `.exe` 可执行程序
-如果你希望将其发送给没有 Python 环境的电脑使用，可以使用 `PyInstaller` 将其打包为单文件版。
-**注意**：`latex2mathml` 内部存在静态数据字典，你需要显式地使用 `--add-data` 挂载本地的环境文件：
+A control panel will pop up. Ensure that the "Background Listening" (后台运行监听) switch is turned on. Then, simply select the plain Markdown text in OneNote and press Enter to trigger the rendering!
 
-```bash
-# 请将下面路径中的 D:\Python\envs\XXX 替换为你本地真实环境的 Python 路径
+### 2. Packaging into a Standalone `.exe` Executable
+
+If you wish to run this on a computer without a Python environment, you can package it into a single-file executable using `PyInstaller`.
+
+**Note**: Since `latex2mathml` relies on internal static data dictionaries, you need to explicitly use the `--add-data` flag to bundle the local environment files:
+
+```
+# Please replace "D:\Python\envs\MarkForMe" in the path below with your actual local Python virtual environment path
 pyinstaller --clean -F -w --add-data "D:\Python\envs\MarkForMe\lib\site-packages\latex2mathml\unimathsymbols.txt;latex2mathml\" -y main.py
 ```
-打包成功后，可在 `dist\` 目录下找到 `main.exe`。
 
----
+Once successfully packaged, you can find `main.exe` inside the `dist/` directory.
 
-## 项目结构
+## Project Structure
 
-```text
+```
 MarkForMe/
-├── main.py                # 主入口文件
+├── main.py                # Main entry file
 ├── core/
-│   ├── state.py           # 全局状态管理与配置本地持久化 (config.json)
-│   ├── key_listener.py    # 全局键盘事件钩子及模式路由
-│   ├── clipboard_mgr.py   # Windows 原生 HTML 格式剪贴板深度封装
-│   └── window_utils.py    # 追踪聚焦窗口，锁定 OneNote 进程状态
+│   ├── state.py           # Global state management & local configuration persistence (config.json)
+│   ├── key_listener.py    # Global keyboard event hook & mode routing
+│   ├── clipboard_mgr.py   # Deep wrapper for native Windows HTML clipboard format
+│   └── window_utils.py    # Focus window tracking, locking OneNote process state
 ├── parser/
-│   └── md_parser.py       # Markdown、Pygments、LaTex->MathML 的调度渲染引擎
+│   └── md_parser.py       # Core rendering engine coordinating Markdown, Pygments, and LaTeX -> MathML
 ├── ui/
-│   └── main_window.py     # CustomTkinter 现代控制台面板界面
-└── requirements.txt       # 项目第三方库依赖清单
+│   └── main_window.py     # Modern console control panel UI built with CustomTkinter
+└── requirements.txt       # Project third-party library dependencies manifest
 ```
 
----
+## License
 
-## 证书与开源协议
-本项目遵循 MIT 开源协议，支持自由修改与二次分发。
+This project is licensed under the MIT License, allowing free modification and redistribution.
+
