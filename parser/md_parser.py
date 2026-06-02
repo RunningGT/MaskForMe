@@ -116,7 +116,7 @@ def parse_to_html(text):
         return None
         
     has_md_features = any(line.lstrip().startswith(c) for c in ('#', '>', '-', '*', '`', '$') for line in text.split('\n')) or \
-                      '**' in text or '`' in text or '~~' in text
+                      '**' in text or '`' in text or '~~' in text or '$' in text
                       
     if not has_md_features:
         return None
