@@ -82,4 +82,3 @@ MarkForMe/
 ## License
 
 This project is licensed under the MIT License, allowing free modification and redistribution.
-
