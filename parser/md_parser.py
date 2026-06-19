@@ -57,7 +57,7 @@ def _pygments_render(text, lang):
             fg_color = "#A9B7C6"
             border_color = "#4D4D4D"
             
-        size = getattr(state.AppState, 'block_size', '11')
+        size = getattr(state.AppState, 'block_size', '14')
         
         formatter = HtmlFormatter(noclasses=True, style=pyg_style, nowrap=True)
         inner_html = highlight(text, lexer, formatter)
@@ -72,7 +72,7 @@ def _pygments_render(text, lang):
     except Exception:
         c_bg = getattr(state.AppState, 'code_bg', '#f6f8fa')
         c_color = getattr(state.AppState, 'code_color', '#d63384')
-        size = getattr(state.AppState, 'block_size', '11')
+        size = getattr(state.AppState, 'block_size', '14')
         return (
             f"<table style=\"width: 100%; border-collapse: collapse; background-color: {c_bg}; border: 1px solid #ccc;\">"
             f"<tr><td style=\"padding: 10px; background-color: {c_bg};\">"
@@ -123,6 +123,19 @@ def parse_to_html(text):
         
     text = preprocess_math(text)
     html = md.render(text).strip()
+
+    def heading_repl(match):
+        level = int(match.group(1))
+        content = match.group(2).strip()
+        size_map = {1: 24, 2: 20, 3: 18, 4: 16, 5: 14, 6: 14}
+        size = size_map.get(level, 20)
+        return (
+            f'<span style="display: inline-block; margin: 0; padding: 0; '
+            f'font-size: {size}pt; font-weight: bold; line-height: 1.2;">'
+            f'{content}</span>'
+        )
+
+    html = re.sub(r'<h([1-6])>(.*?)</h\1>', heading_repl, html, flags=re.DOTALL)
     
     html = html.replace('<strong>', '<strong style="font-weight: bold;">')
     html = html.replace('<b>', '<b style="font-weight: bold;">')
@@ -147,6 +160,7 @@ def parse_to_html(text):
     if html.startswith('<p>') and html.endswith('</p>') and html.count('<p>') == 1:
         html = html[3:-4].strip()
 
-    # 【修复3】将包裹层从 <div> 改为 <span>。这会告诉 OneNote 它是行内元素，绝对不许自动换行！
-    wrapper = f"<span style='font-family: \"Microsoft YaHei UI\", sans-serif; font-size: 11pt;'>{html}</span>"
+    # 末尾的零宽正文样式用于把 OneNote 的后续输入恢复成普通 14pt 正文。
+    reset_tail = '<span style="font-size: 14pt; font-weight: normal;">&#8203;</span>'
+    wrapper = f"<span style='font-family: \"Microsoft YaHei UI\", sans-serif; font-size: 14pt;'>{html}{reset_tail}</span>"
     return wrapper

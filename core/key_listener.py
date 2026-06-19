@@ -106,9 +106,6 @@ class KeyListener:
             
             text = get_clipboard_text()
             if not text:
-                if mode == 4 or mode == 3:
-                    keyboard.send('right')
-                    time.sleep(0.02)
                 self._safe_send_enter(is_ctrl)
                 return
 
@@ -117,9 +114,6 @@ class KeyListener:
             
             if not html:
                 state.AppState.last_html = "单行普通文本跳过渲染"
-                if mode == 4 or mode == 3:
-                    keyboard.send('right')
-                    time.sleep(0.02)
                 self._safe_send_enter(is_ctrl)
                 return
 
@@ -132,20 +126,14 @@ class KeyListener:
             if mode == 4:
                 # 模式4：仅仅替换当前行，绝对不换行
                 keyboard.send('ctrl+v')
-                time.sleep(0.05)
-                keyboard.send('right')
                 
             elif mode in [2, 3]:
                 # 模式2、3：替换当前行，然后去往下一行
                 keyboard.send('ctrl+v')
                 time.sleep(0.05)
-                keyboard.send('right')
-                time.sleep(0.02)
                 self._safe_send_enter(is_ctrl) # 替换完成后发送真实换行
                 
             elif mode == 1:
-                keyboard.send('right')
-                time.sleep(0.02)
                 self._safe_send_enter(is_ctrl)
                 time.sleep(0.05)
                 keyboard.send('ctrl+v')
@@ -153,7 +141,6 @@ class KeyListener:
         except Exception as e:
             # 【终极保险】如果这里发生任何未知的代码崩溃，立即解除选中状态并还给用户正常的回车
             try:
-                keyboard.send('right') 
                 self._safe_send_enter(is_ctrl)
             except:
                 pass
